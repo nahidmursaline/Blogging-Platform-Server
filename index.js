@@ -38,6 +38,17 @@ async function run() {
       res.send(result);
     })
 
+
+    app.get('/blog', async(req, res) => {
+      console.log(req.query)
+      let query = {};
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      const result = await blogCollection.find(query).toArray();
+      res.send(result);
+    })
+    
     app.get('/blog', async(req, res) => {
       const cursor = blogCollection.find();
       const result = await cursor.toArray();
@@ -51,7 +62,14 @@ async function run() {
       res.send(result);
     })
 
+    app.delete('/blog/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await blogCollection.deleteOne(query)
+      res.send(result);
+    })
 
+    
 
 
 
